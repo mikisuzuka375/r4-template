@@ -4,9 +4,11 @@
 @use "../../core" as *;
 @use "../common/" as *;
 
+@use "../../core" as *;
+@use "../../global" as *;
+
 // --------------------------------------------------
 // Setting（true or false）
-// wiki→http://new-cms-wiki.113110.website/coding-parts/calendar.html
 // --------------------------------------------------
 // 日付に背景を付ける場合
 $calendar-bg: false;
@@ -26,7 +28,7 @@ $calendar-btntop: false;
 // --------------------------------------------------
 .blog-calendar {
   width: 100%;
-  color: $base-font-color;
+  color: $color-text;
   text-align: center;
   table-layout: fixed;
   position: relative;
@@ -42,10 +44,8 @@ $calendar-btntop: false;
   // ◯年◯月  //
   ////////////
   caption {
-    font: {
-      size: 18px;
-      weight: bold;
-    }
+    font-size: 18px;
+    font-weight: bold;
     padding: 5px 0 15px 0;
   }
 
@@ -53,10 +53,8 @@ $calendar-btntop: false;
   // 曜日  //
   //////////
   thead th {
-    font: {
-      size: 14px;
-      weight: bold;
-    }
+    font-size: 14px;
+    font-weight: bold;
     border: {
       top: 1px solid $primary;
       bottom: 1px solid $primary;
@@ -92,14 +90,14 @@ $calendar-btntop: false;
       > a {
         display: inline-block;
         font-size: $base-font-size;
-        color: $base-font-color;
+        color: $color-text;
         text-decoration: underline;
         &:hover {
           color: $primary;
           text-decoration: none;
         }
         &[href="#"] {
-          color: $base-font-color;
+          color: $color-text;
           text-decoration: none;
           pointer-events: none;
         }
@@ -114,7 +112,7 @@ $calendar-btntop: false;
           border-radius: 50%;
           background: $primary;
           &[href="#"] {
-            color: $base-font-color;
+            color: $color-text;
             background: #f5f5f5;
           }
           &:hover {
@@ -168,37 +166,44 @@ $calendar-btntop: false;
       &#blog-calendar-prev,
       &#blog-calendar-next {
         position: absolute;
-        top: -2px;
         z-index: 1;
+<<<<<<< HEAD
         > a {
           @extend .fade;
+=======
+        top: -2px;
+        > a {
+          @include fade;
+>>>>>>> upstream/main
           display: inline-block;
           height: 34px;
           width: 34px;
           font-size: 0;
           vertical-align: top;
           text-decoration: none;
-          border: 1px solid #ddd;
+          border: 1px solid $color-border;
           border-radius: 50%;
           background: $primary;
           position: relative;
+          transition: 0.3s;
           &::after {
             content: "";
-            font: {
-              size: 20px;
-              family: $f-fa;
-              weight: 900;
-            }
             height: 34px;
             width: 32px;
+            font-size: 20px;
+            font-family: $f-fa;
+            font-weight: 900;
+            color: #fff;
             line-height: 34px;
             text-align: center;
-            color: #fff;
             position: absolute;
             top: 0;
             left: 0;
           }
+<<<<<<< HEAD
           transition: 0.3s;
+=======
+>>>>>>> upstream/main
           &:hover {
             text-decoration: none;
           }
@@ -226,7 +231,7 @@ $calendar-btntop: false;
       }
       a {
         font-size: 14px;
-        color: $base-font-color;
+        color: $color-text;
         letter-spacing: 0;
         text-decoration: none;
         &:hover {
@@ -253,7 +258,7 @@ $calendar-btntop: false;
       }
       .blog {
         &-card {
-          @extend .hover-all;
+          @include hover-all;
           &:hover {
             .blog-title {
               text-decoration: underline;
@@ -274,11 +279,9 @@ $calendar-btntop: false;
         }
         &-title {
           overflow: hidden;
-          font: {
-            size: 14px;
-            weight: bold;
-          }
-          color: $base-font-color;
+          font-size: 14px;
+          font-weight: bold;
+          color: $color-text;
           line-height: 1.5;
           text-align: center;
           white-space: nowrap;
@@ -298,21 +301,21 @@ $calendar-btntop: false;
       }
       .blog {
         &-card {
-          @extend .hover-all;
-          @extend .fade;
+          @include hover-all;
+          @include fade;
           @include flex;
         }
         &-list {
           display: none;
           width: 600px;
           background: #fff;
-          box-shadow: 0 0 20px rgba(#000, 0.1);
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
           position: absolute;
           z-index: 50;
           right: 0;
           padding: 10px;
           .item {
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid $color-border;
             padding: 10px 0;
             &:first-child {
               padding-top: 0;
@@ -336,10 +339,8 @@ $calendar-btntop: false;
           background: #f2f2f2;
           margin-right: 20px;
           .date {
-            font: {
-              size: 20px;
-              weight: bold;
-            }
+            font-size: 20px;
+            font-weight: bold;
             line-height: 1;
             letter-spacing: 0;
           }
@@ -367,11 +368,9 @@ $calendar-btntop: false;
           padding-top: 10px;
         }
         &-title {
-          font: {
-            size: 16px;
-            weight: bold;
-          }
-          color: $base-font-color;
+          font-size: 16px;
+          font-weight: bold;
+          color: $color-text;
           line-height: 1.5;
         }
       }

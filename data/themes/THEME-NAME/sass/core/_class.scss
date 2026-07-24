@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 @use "../global" as *;
-
 $flex-direction: (
   fd--row: row,
   fd--column: column,
@@ -31,6 +30,18 @@ $align-items: (
 
 // 余白クラスの生成
 @include spaceloop();
+
+// 変数は既存の $space-map, $space-map-tb を利用
+@include owl-spacing($space-map, $space-map-tb);
+
+// gap
+@include spacing-class(gap, "gap");
+
+// margin-top
+@include spacing-class(margin-top, "mt");
+
+// margin-bottom
+@include spacing-class(margin-bottom, "mb");
 
 // 行揃え指定クラス
 @include textalign();
@@ -75,16 +86,12 @@ $align-items: (
   width: 100% !important;
 }
 
-// 画像のフェード用クラス
 .fade {
-  transition: opacity 0.2s;
-  opacity: 1;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  @include fade;
+}
 
-  &:hover {
-    opacity: 0.7;
-  }
+.hover-all {
+  @include hover-all();
 }
 
 // 画像の角丸用クラス
@@ -97,24 +104,27 @@ $align-items: (
 }
 
 // 画像のtb時幅設定クラス
-@for $i from 8 through 12 {
-  $size: $i * 50;
-  .img-tb#{$size} {
-    max-width: #{$size}px;
-    margin: 0 auto;
+@media only screen and (max-width: $screen-tb) {
+  @for $i from 8 through 12 {
+    $size: $i * 50;
+    .img-tb#{$size} {
+      max-width: #{$size}px;
+
+      margin-inline: auto;
+    }
   }
 }
 
 // flex時gap設定クラス
 @for $i from 1 through 50 {
   .gap#{$i} {
-    gap: #{$i}px;
+    gap: #{$i}px !important;
   }
 }
 @media only screen and (max-width: $screen-tb) {
   @for $i from 1 through 50 {
     .gap#{$i}-tb {
-      gap: #{$i}px;
+      gap: #{$i}px !important;
     }
   }
 }
@@ -128,8 +138,8 @@ $align-items: (
 }
 
 .center-box {
-  margin-left: auto !important;
   margin-right: auto !important;
+  margin-left: auto !important;
 }
 
 // フォント太さクラス
@@ -145,16 +155,12 @@ $align-items: (
   @media only screen and (max-width: $screen-tb) {
     // 行揃え指定クラス
     @include textalign(-tb);
-
     // タブレット用余白クラスの生成
     @include spaceloop(-tb);
-
     // タブレット用フォントサイズクラスの生成
     @include fontsize(-tb);
-
     // タブレット用lineheightのクラス
     @include lineheight(-tb);
-
     // タブレット用letterspacingのクラス
     @include letterspacing(-tb);
   }
@@ -162,16 +168,12 @@ $align-items: (
   @media only screen and (max-width: $screen-sp) {
     // 行揃え指定クラス
     @include textalign(-sp);
-
     // スマホ用余白クラスの生成
     @include spaceloop(-sp);
-
     // スマホ用フォントサイズクラスの生成
     @include fontsize(-sp);
-
     // スマホ用lineheightのクラス
     @include lineheight(-sp);
-
     // スマホ用letterspacingのクラス
     @include letterspacing(-sp);
   }
@@ -189,6 +191,12 @@ $align-items: (
     }
   }
 
+  .pctbsp {
+    @media only screen and (max-width: $screen-xs) {
+      display: none !important;
+    }
+  }
+
   .tb {
     @media only screen and (min-width: $screen-pc-min) {
       display: none !important;
@@ -200,20 +208,26 @@ $align-items: (
       display: none !important;
     }
   }
+
+  .xs {
+    @media only screen and (min-width: $screen-sp-min) {
+      display: none !important;
+    }
+  }
 }
 
 //フレックス
 .flex {
-  @include flex(row, wrap, space-between, flex-start);
-
-  &.-center {
-    align-items: center;
+  @include flex(row, wrap, space-between, stretch);
+  @media only screen and (max-width: $screen-sp) {
+    .flex-item {
+      width: 100% !important;
+    }
   }
+}
 
-  &.-reverse {
-    flex-direction: row-reverse;
-  }
-
+.flex-tb {
+  @include flex(row, wrap, space-between, stretch);
   @media only screen and (max-width: $screen-tb) {
     .flex-item {
       width: 100% !important;
@@ -221,27 +235,39 @@ $align-items: (
   }
 }
 
+.inline-flex {
+  @include flex(row, wrap, space-between, stretch);
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
 @each $class, $value in $flex-direction {
   .#{$class} {
-    @include f-direction($value);
+    @include f-direction($value, true);
   }
 }
 
 @each $class, $value in $flex-wrap {
   .#{$class} {
-    @include f-wrap($value);
+    @include f-wrap($value, true);
   }
 }
 
 @each $class, $value in $justify-content {
   .#{$class} {
-    @include j-content($value);
+    @include j-content($value, true);
   }
 }
 
 @each $class, $value in $align-items {
   .#{$class} {
-    @include a-items($value);
+    @include a-items($value, true);
   }
 }
 
@@ -249,25 +275,25 @@ $align-items: (
   @media only screen and (max-width: $screen-tb) {
     @each $class, $value in $flex-direction {
       .#{$class}-tb {
-        @include f-direction($value);
+        @include f-direction($value, true);
       }
     }
 
     @each $class, $value in $flex-wrap {
       .#{$class}-tb {
-        @include f-wrap($value);
+        @include f-wrap($value, true);
       }
     }
 
     @each $class, $value in $justify-content {
       .#{$class}-tb {
-        @include j-content($value);
+        @include j-content($value, true);
       }
     }
 
     @each $class, $value in $align-items {
       .#{$class}-tb {
-        @include a-items($value);
+        @include a-items($value, true);
       }
     }
   }
@@ -275,25 +301,51 @@ $align-items: (
   @media only screen and (max-width: $screen-sp) {
     @each $class, $value in $flex-direction {
       .#{$class}-sp {
-        @include f-direction($value);
+        @include f-direction($value, true);
       }
     }
 
     @each $class, $value in $flex-wrap {
       .#{$class}-sp {
-        @include f-wrap($value);
+        @include f-wrap($value, true);
       }
     }
 
     @each $class, $value in $justify-content {
       .#{$class}-sp {
-        @include j-content($value);
+        @include j-content($value, true);
       }
     }
 
     @each $class, $value in $align-items {
       .#{$class}-sp {
-        @include a-items($value);
+        @include a-items($value, true);
+      }
+    }
+  }
+
+  @media only screen and (max-width: $screen-xs) {
+    @each $class, $value in $flex-direction {
+      .#{$class}-xs {
+        @include f-direction($value, true);
+      }
+    }
+
+    @each $class, $value in $flex-wrap {
+      .#{$class}-xs {
+        @include f-wrap($value, true);
+      }
+    }
+
+    @each $class, $value in $justify-content {
+      .#{$class}-xs {
+        @include j-content($value, true);
+      }
+    }
+
+    @each $class, $value in $align-items {
+      .#{$class}-xs {
+        @include a-items($value, true);
       }
     }
   }

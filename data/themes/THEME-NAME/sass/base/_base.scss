@@ -1,12 +1,12 @@
-@charset 'UTF-8';
+@charset "UTF-8";
 
 @use "../global" as *;
 
 body {
-  color: $base-font-color;
-  font-size: $base-font-size;
   font-family: $base-font;
   font-weight: $base-font-weight;
+  color: $color-text;
+  background: $light-site-bg;
 }
 
 p,
@@ -20,29 +20,28 @@ td {
 
 a {
   @include link;
-
-  color: $base-link-color;
-
+  color: $color-link;
   &:hover {
-    color: $base-link-color;
+    color: $color-link;
   }
 
   //電話番号
   &[href^="tel:"] {
-    color: $base-font-color;
+    color: inherit;
     text-decoration: underline;
-
     @media only screen and (min-width: $screen-pc-min) {
       text-decoration: none;
       pointer-events: none;
     }
   }
-}
-
-@if $responsive {
-  @media only screen and (max-width: $screen-tb) {
-    body {
-      font-size: $base-font-size-tb;
+  @if $accessibility-functions {
+    body[data-theme='dark'] &,
+    body[data-theme='blue'] &,
+    body[data-theme='yellow'] & {
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 }

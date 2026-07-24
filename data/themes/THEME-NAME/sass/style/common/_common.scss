@@ -6,15 +6,89 @@
 // 追加分ここから
 // --------------------------------------------------
 
+// --------------------------------------------------
+// Regulation Parts
+// --------------------------------------------------
+// Font
+.f-min {
+  font-family: $f-min !important;
+}
+
+// slick
+.slick-slider {
+  .slick-arrow {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: $primary;
+    z-index: 1;
+    &:focus {
+      background: $primary;
+    }
+    &:hover {
+      background: $secondary;
+    }
+    &:before {
+      content: $icon-angle-right;
+      font-size: 14px;
+      font-family: $f-fa;
+      font-weight: 900;
+      color: $color-white;
+      line-height: 30px;
+    }
+    &.slick-prev {
+      &:before {
+        transform: rotate(180deg);
+      }
+    }
+    &.slick-next {
+    }
+  }
+  ul.slick-dots {
+    > li {
+      height: 10px;
+      width: 10px;
+      margin: 0 7.5px;
+      &.slick-active button {
+        background: $primary;
+      }
+    }
+    button {
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      background: $color-gray;
+      padding: 0;
+      &::before {
+        display: none;
+      }
+    }
+  }
+}
+
+// CMS関連ページ用
+.rel-no-link {
+  .page_rels {
+    > li > a {
+      cursor: default;
+      color: $color-text;
+      line-height: 1.7;
+      text-decoration: none;
+      pointer-events: none;
+    }
+  }
+}
+
+// ページ内リンク
 .anchor-box {
+  border: 1px solid $color-border;
+  background-color: $color-white;
   position: relative;
-  border: 1px solid #ddd;
-  background-color: #fff;
   margin-top: 10px;
 
   .anchor-ttl {
+    background: $color-white;
     position: absolute;
-    background: #fff;
     top: -15px;
     left: 30px;
     padding: 0 20px;
@@ -28,23 +102,21 @@
     & > li {
       & > a {
         display: block;
-        position: relative;
+        color: $color-text;
         text-decoration: none;
-        color: $base-font-color;
+        position: relative;
         padding-left: 22px;
         transition: all 0.3s;
 
         &:before {
           content: "\f107";
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          font: {
-            weight: 900;
-            family: $f-fa;
-          }
+          font-family: $f-fa;
+          font-weight: 900;
           color: $primary;
+          position: absolute;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
         }
 
         &:hover {
@@ -61,9 +133,13 @@
     }
 
     .anchor-link {
-      padding: 20px 20px 15px;
+      gap: 10px 20px;
+    }
+  }
+  @media only screen and (max-width: $screen-sp) {
+    .anchor-link {
       gap: 5px 0;
-
+      padding: 20px 20px 15px;
       & > li {
         width: 100%;
       }
@@ -71,8 +147,9 @@
   }
 }
 
+// パンくず
 .breadcrumb-wrap {
-  ul.breadcrumb {
+  ol.breadcrumb {
     font-size: 0;
     margin: auto;
     > li {
@@ -98,8 +175,8 @@
   }
   @media only screen and (max-width: $screen-tb) {
     ul.breadcrumb {
-      text-align: left;
       width: 100%;
+      text-align: left;
       > li {
         font-size: 12px;
       }
@@ -107,110 +184,1043 @@
   }
 }
 
-.box01 {
-  background: #fff;
-  border: 1px solid #d0d0d0;
-  border-radius: 30px;
+// BOX
+@mixin box(
+  $fontColor: $color-text,
+  $bgColor: $color-white,
+  $bdrColor: $color-border
+) {
+  color: $fontColor;
+  border: 1px solid $bdrColor;
+  border-radius: 10px;
+  background: $bgColor;
   padding: 45px 50px;
-
+  &.-small {
+    padding: 25px 30px;
+  }
+  .box-ttl {
+    font-size: 24px;
+    font-weight: bold;
+    color: $secondary;
+    line-height: 1.5;
+    border-bottom: 1px solid #ddd; //今後変数作るか検討
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+  }
+  @if $accessibility-functions {
+    @include accessibility-box();
+  }
   @media only screen and (max-width: $screen-tb) {
-    padding: 20px;
+    padding: 15px 20px;
+    .box-ttl {
+      font-size: 18px;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
   }
 }
 
+.box01 {
+  @include box();
+}
+
 .box02 {
-  @extend .box01;
-  border: 1px solid $primary;
+  @include box($bgColor: $color-gray-lighter, $bdrColor: $color-gray);
 }
 
 .box03 {
-  @extend .box01;
-  background: $primary;
+  @include box();
+  border-color: rgba(255, 0, 0, 0.1);
+  background: rgba(255, 0, 0, 0.1);
+}
+
+// ドロップダウン
+.dropdown-box {
+  @include flex($f-wrap: nowrap, $a-items: center);
+  gap: 25px;
+  border-radius: 6px;
+  background: $color-gray-lighter;
+  padding: 10px 10px 10px 25px;
+  > .ttl {
+    font-size: 17px;
+    font-weight: bold;
+  }
+  > .select-box {
+    flex: 1;
+    position: relative;
+    &:after {
+      content: $icon-angle-right;
+      font-size: 14px;
+      font-family: $f-fa;
+      font-weight: 900;
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%) rotate(90deg);
+    }
+    select {
+      height: 45px;
+      width: 100%;
+      color: $color-text;
+      line-height: 45px;
+      border: none;
+      border-radius: 4px;
+      background: $color-white;
+      padding: 0 30px 0 15px;
+
+      appearance: none;
+    }
+  }
+}
+
+// タブ切り替え
+.tab-list {
+  @include flex($f-wrap: nowrap);
+  gap: 3px;
+  > li {
+    flex: 1;
+    > a {
+      @include flex($a-items: center, $j-content: center);
+      height: 100%;
+      min-height: 67px;
+      min-width: max-content;
+      overflow: hidden;
+      font-weight: 700;
+      color: $color-text;
+      line-height: 1.5;
+      text: {
+        decoration: none;
+        align: center;
+      }
+      border-radius: 8px 8px 0 0;
+      background: $color-gray;
+      padding: 13px 10px;
+      transition: 0.3s;
+
+      &:hover,
+      &.current {
+        color: $color-white;
+        background: $primary;
+      }
+    }
+  }
+
+  @media only screen and (max-width: $screen-tb) {
+    &:not(.-scrollable) {
+      flex-wrap: wrap;
+      gap: 10px 10px;
+      > li {
+        min-width: 30%;
+        > a {
+          min-width: auto;
+        }
+      }
+    }
+    &.-scrollable {
+      overflow: auto;
+      padding: 0 calc(#{$gutter-tb}/ 2);
+      margin-right: calc(#{$gutter-tb}/ 2 * -1);
+      margin-left: calc(#{$gutter-tb}/ 2 * -1);
+      > li {
+        width: auto;
+        flex-basis: auto;
+        flex-shrink: 0;
+        > a {
+          min-height: 61px;
+          padding: 10px 20px;
+        }
+      }
+      &.-arrow {
+        position: relative;
+        &:after {
+          content: "\f105";
+          height: 25px;
+          width: 25px;
+          font-size: 1rem;
+          font-family: $f-fa;
+          font-weight: 900;
+          color: #fff;
+          line-height: 25px;
+          text-align: center;
+          border-radius: 50%;
+          background: $secondary;
+          position: absolute;
+          top: 50%;
+          right: 20px;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+}
+
+.card-item01 {
+  position: relative;
+  &:hover {
+    .img-wrap > img {
+      transform: scale(1.1);
+    }
+  }
+  .img-wrap {
+    height: 220px;
+    overflow: hidden;
+    border-radius: 10px;
+    // aspect-ratio: 3/2;
+    > img {
+      transition: 0.3s;
+    }
+  }
+  .txt-wrap {
+    min-width: 165px;
+    max-width: 90%;
+    overflow: hidden;
+    border-radius: 0 10px 0 10px;
+    background: $color-white;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 12px 40px 12px 15px;
+    &:after {
+      content: $icon-angle-right;
+      height: 17px;
+      width: 17px;
+      font-size: 12px;
+      font-family: $f-fa;
+      font-weight: 900;
+      color: $color-white;
+      line-height: 17px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 50%;
+      background: $primary;
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+    }
+    .ttl {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+  }
+  @media only screen and (max-width: $screen-tb) {
+    max-width: 500px;
+    margin: 0 auto;
+    .txt-wrap {
+      min-width: 145px;
+      padding: 11px 40px 11px 15px;
+      .ttl {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.section-head {
+  @include flex($a-items: center, $j-content: space-between);
+  margin-bottom: 25px;
+  > * {
+    margin-bottom: 0;
+  }
+  &.-main {
+    justify-content: center;
+    position: relative;
+    margin-bottom: 30px;
+    .link-wrap {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+  &.-sub {
+    margin-bottom: 20px;
+  }
+  @media only screen and (max-width: $screen-tb) {
+    margin-bottom: 20px;
+    &.-main {
+      margin-bottom: 25px;
+    }
+    &.-sub {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.interview-card {
+  border-bottom: 1px solid $color-border;
+  padding-bottom: 15px;
+  .interview-thumb {
+    margin-bottom: 10px;
+    > img {
+      transition: 0.3s;
+    }
+  }
+  .txt-wrap {
+    position: relative;
+    padding-right: 50px;
+    &:after {
+      content: $icon-angle-right;
+      height: 40px;
+      width: 40px;
+      font-size: 12px;
+      font-family: $f-fa;
+      font-weight: 900;
+      color: $color-white;
+      line-height: 38px;
+      text-align: center;
+      text-decoration: none;
+      border: 1px solid $primary;
+      border-radius: 50%;
+      background: $primary;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      transition: 0.3s;
+    }
+    .ttl {
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+  &:hover {
+    .interview-thumb > img {
+      transform: scale(1.1);
+    }
+    .txt-wrap {
+      &:after {
+        color: $primary;
+        background: $color-white;
+      }
+    }
+  }
+  .interview-list.-side & {
+    .txt-wrap {
+      font-size: 17px;
+      padding-right: 0;
+      &:after {
+        display: none;
+      }
+    }
+  }
+  @media only screen and (max-width: $screen-tb) {
+    padding-bottom: 10px;
+    .txt-wrap {
+      padding-right: 40px;
+      &:after {
+        height: 30px;
+        width: 30px;
+        line-height: 28px;
+      }
+      .ttl {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.interview-thumb {
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
+
+  aspect-ratio: 3/2;
+  &:after {
+    content: "";
+    height: 60.8%;
+    width: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(221, 221, 221, 0),
+      rgba(0, 0, 0, 0.15)
+    );
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  .info-labels {
+    @include flex($a-items: center, $j-content: flex-end);
+    gap: 10px;
+    line-height: 1;
+    position: absolute;
+    z-index: 1;
+    right: 30px;
+    left: 30px;
+    bottom: 30px;
+    .info-name {
+      font-size: 20px;
+      font-weight: 500;
+      color: $color-white;
+      line-height: 1;
+    }
+    .info-type {
+      font-size: 15px;
+      font-weight: 500;
+      color: $color-white;
+      border-radius: 16px;
+      background: $primary;
+      padding: 1px 16px;
+    }
+  }
+  .interview-list & {
+    &:after {
+      height: 73.5%;
+    }
+    .info-labels {
+      right: 20px;
+      left: 20px;
+      bottom: 20px;
+    }
+    &.-side {
+      &:after {
+        height: 80.2%;
+      }
+      .info-labels {
+        right: 15px;
+        left: 15px;
+        bottom: 20px;
+      }
+    }
+  }
+  @media only screen and (max-width: $screen-tb) {
+    .info-labels {
+      right: 20px;
+      left: 20px;
+      bottom: 20px;
+      .info-name {
+        font-size: 18px;
+      }
+      .info-type {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+details.faq-item {
   border: 1px solid $primary;
+  border-radius: 10px;
+  background: $color-white;
+  summary.faq-question {
+    cursor: pointer;
+    color: $color-white;
+    list-style: none;
+    border-radius: 10px;
+    background: $primary;
+    position: relative;
+    padding: 15px 65px 15px 40px;
+    transition: 0.3s;
+    &::marker,
+    &::-webkit-details-marker {
+      display: none;
+    }
+    .ttl {
+      @include flex($f-wrap: nowrap);
+      gap: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 1.7;
+      .faq-mark {
+        flex-shrink: 0;
+      }
+    }
+    &:after {
+      content: $icon-plus;
+      height: 25px;
+      width: 25px;
+      font-size: 12px;
+      font-family: $f-fa;
+      font-weight: 900;
+      color: $primary;
+      line-height: 25px;
+      text-align: center;
+      border-radius: 50%;
+      background: $color-white;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+    }
+  }
+  &[open] summary.faq-question {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    &:after {
+      content: $icon-minus;
+    }
+  }
+  .faq-content {
+    padding: 25px 30px;
+  }
+  @media only screen and (max-width: $screen-tb) {
+    summary.faq-question {
+      padding: 10px 50px 10px 20px;
+      .ttl {
+        font-size: 18px;
+      }
+      &:after {
+        right: 15px;
+      }
+    }
+    .faq-content {
+      padding: 15px 20px;
+    }
+  }
+}
+
+.accordion-box01 {
+  border: 1px solid $primary;
+  border-radius: 10px;
+  background: $color-white;
+  .ttl-wrap {
+    color: $color-white;
+    border-radius: 10px;
+    background: $primary;
+    position: relative;
+    padding: 15px 65px 15px 40px;
+    transition: 0.3s;
+    .ttl {
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 1.7;
+    }
+    &:after {
+      content: $icon-plus;
+      height: 25px;
+      width: 25px;
+      font-size: 12px;
+      font-family: $f-fa;
+      font-weight: 900;
+      color: $primary;
+      line-height: 25px;
+      text-align: center;
+      border-radius: 50%;
+      background: $color-white;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+    }
+    &.active {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+      &:after {
+        content: $icon-minus;
+      }
+    }
+  }
+  .contents-wrap {
+    padding: 25px 30px;
+  }
+  @media only screen and (max-width: $screen-tb) {
+    .ttl-wrap {
+      padding: 10px 50px 10px 20px;
+      .ttl {
+        font-size: 18px;
+      }
+      &:after {
+        right: 15px;
+      }
+    }
+    .contents-wrap {
+      padding: 15px 20px;
+    }
+  }
+}
+
+.accordion-box02 {
+  border-radius: 6px;
+  background: rgba(255, 165, 0, 0.1);
+  padding-bottom: 10px;
+  .ttl-wrap {
+    position: relative;
+    padding: 20px 65px 10px 30px;
+    .ttl {
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 1.7;
+    }
+    &:after {
+      content: $icon-plus;
+      height: 25px;
+      width: 25px;
+      font-size: 12px;
+      font-family: $f-fa;
+      font-weight: 900;
+      color: $color-white;
+      line-height: 25px;
+      text-align: center;
+      border-radius: 50%;
+      background: $primary;
+      position: absolute;
+      top: 50%;
+      right: 30px;
+      transform: translateY(-50%) translateY(5px);
+    }
+    &.active:after {
+      content: $icon-minus;
+    }
+  }
+  .contents-wrap {
+    padding: 0 30px 12px;
+    .inner-wrap {
+      border-radius: 10px;
+      background: $color-white;
+      padding: 20px;
+    }
+  }
+  @media only screen and (max-width: $screen-tb) {
+    .ttl-wrap {
+      padding: 15px 50px 10px 20px;
+      .ttl {
+        font-size: 16px;
+      }
+      &:after {
+        right: 15px;
+        transform: translateY(-50%) translateY(2.5px);
+      }
+    }
+    .contents-wrap {
+      padding: 0 20px 5px;
+    }
+  }
+}
+
+.contact-box01 {
+  border-radius: 10px;
+  background: rgba(255, 165, 0, 0.1);
+  padding: 35px 40px 15px;
+  .contact-ttl {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $primary;
+    margin-bottom: 25px;
+  }
+  // .contents-wrap {}
+  @media only screen and (max-width: $screen-tb) {
+    padding: 20px 20px;
+    .contact-ttl {
+      font-size: 20px;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    // .contents-wrap {}
+  }
+}
+
+.contact-box02 {
+  border-radius: 10px;
+  background: rgba(255, 165, 0, 0.1);
+  padding: 35px 15px 15px;
+  .contact-ttl {
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  .contents-wrap {
+    text-align: center;
+    border-radius: 10px;
+    background: $color-white;
+    padding: 30px 20px;
+    .ttl {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .txt {
+      font-size: 17px;
+      margin-bottom: 20px;
+    }
+    .tel-box {
+      margin-bottom: 5px;
+    }
+    .sub {
+      font-size: 17px;
+    }
+  }
+  @media only screen and (max-width: $screen-tb) {
+    padding: 20px 10px 10px;
+    .contact-ttl {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    .contents-wrap {
+      padding: 20px 10px 10px;
+      .ttl {
+        font-size: 16px;
+      }
+      .txt {
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+      .sub {
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+.contact-btn {
+  @include flex($a-items: center);
+  gap: 15px;
+  .contact-tag {
+    width: 55px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $color-white;
+    line-height: 23px;
+    text-align: center;
+    border: 1px solid $primary;
+    border-radius: 4px;
+    background: $primary;
+  }
+  &.-fax {
+    .contact-tag {
+      color: $primary;
+      background: $color-white;
+    }
+  }
+  .num,
+  .mail {
+    font-size: 26px;
+    font-weight: 500;
+    color: $color-text;
+    line-height: 1;
+    letter-spacing: 0;
+    text-decoration: none;
+  }
+}
+
+// お問い合わせ先box
+.tel-box {
+  .tel > a,
+  .fax {
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+  .tel,
+  .fax {
+    &:before {
+      font-size: 26px;
+      font-family: $f-fa;
+      font-weight: 900;
+      margin-right: 8px;
+    }
+    > span {
+      font-size: 16px;
+    }
+  }
+  .tel:before {
+    content: $icon-tel;
+  }
+  .fax:before {
+    content: $icon-fax;
+  }
+  @media only screen and (max-width: $screen-tb) {
+    .tel > a,
+    .fax {
+      font-size: 24px;
+    }
+    .tel,
+    .fax {
+      &:before {
+        font-size: 20px;
+      }
+      > span {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// スライダー
+.photo-slider {
+  .slick-slide {
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  ul.slick-dots {
+    bottom: 30px;
+  }
+  @media only screen and (max-width: $screen-tb) {
+    ul.slick-dots {
+      bottom: 10px;
+    }
+  }
+}
+
+@if $accessibility-functions {
+  .change-menu {
+    @include flex($f-direction: column);
+    gap: 10px;
+
+    > li {
+      overflow: hidden;
+      border-radius: 10px;
+      background: $primary;
+      position: relative;
+      padding: 10px 15px 10px 50px;
+      transition: 0.3s;
+      &.font-change:before {
+        content: $icon-font-height;
+      }
+      &.color-change:before {
+        content: $icon-color;
+      }
+      &:before {
+        font-size: 20px;
+        font-family: $f-fa;
+        font-weight: 900;
+        color: $color-white;
+        line-height: 1;
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+      }
+      > .ttl {
+        font-weight: 500;
+        color: $color-white;
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+    }
+    @media only screen and (max-width: $screen-tb) {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      padding: 0 calc(#{$gutter-tb} / 2);
+      > li {
+        flex: 1;
+        border-radius: 10px;
+        padding: 10px 10px 10px 40px;
+        &:before {
+          left: 10px;
+        }
+        &.font-change {
+          flex: 1.3;
+        }
+      }
+    }
+  }
+
+  // サイトテーマ切り替えボタン
+  .change-btns {
+    line-height: 1;
+    button {
+      line-height: 1;
+      vertical-align: middle;
+      border: 1px solid $color-border;
+      padding: 5px 5px;
+
+      // &.active {
+      //   border-color: $color-white;
+      // }
+      &:focus-visible {
+        outline-color: var(--red) !important;
+      }
+      &[data-set-font-size] {
+        color: $color-text;
+        background-color: $color-white;
+      }
+    }
+  }
 }
 
 // --------------------------------------------------
 // Headings
 // --------------------------------------------------
+@mixin heading02 {
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 1.55;
+  letter-spacing: 0.1em;
+  text-align: center;
+  position: relative;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  &:after {
+    content: "";
+    height: 2px;
+    width: 100px;
+    background: $primary;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+  }
+  @media only screen and (max-width: $screen-tb) {
+    font-size: 22px;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+  &.-left {
+    text-align: left;
+    &:after {
+      left: 0;
+      transform: none;
+    }
+  }
+}
+
+@mixin heading03 {
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  border-left: 2px solid $primary;
+  padding-left: 20px;
+  margin-bottom: 25px;
+
+  @media only screen and (max-width: $screen-tb) {
+    font-size: 18px;
+    margin-bottom: 17px;
+  }
+}
+
+@mixin heading04 {
+  font-size: 20px;
+  font-weight: bold;
+  color: $primary;
+  line-height: 1.8;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+
+  @media only screen and (max-width: $screen-tb) {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+}
+
+@mixin heading05 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 h2 {
   &.top {
-    // トップページ用
   }
-
   &:not(.top) {
-    // サブページ用
+    &:not([class^="heading"]) {
+      @include heading02();
+    }
   }
 }
 
 h3 {
   &.top {
-    // トップページ用
   }
-
   &:not(.top) {
-    // サブページ用
+    &:not([class^="heading"]) {
+      @include heading03();
+    }
   }
 }
 
 h4 {
   &.top {
-    // トップページ用
   }
-
   &:not(.top) {
-    // サブページ用
+    &:not([class^="heading"]) {
+      @include heading04();
+    }
   }
 }
 
 h5 {
   &.top {
-    // トップページ用
   }
-
   &:not(.top) {
-    // サブページ用
-    font-weight: bold;
-    color: $primary;
-    margin-bottom: 10px;
+    &:not([class^="heading"]) {
+      @include heading05();
+    }
   }
 }
 
+.heading02 {
+  @include heading02();
+}
+.heading03 {
+  @include heading03();
+}
+.heading04 {
+  @include heading04();
+}
+.heading05 {
+  @include heading05();
+}
+
+.lead-txt {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.7;
+  @media only screen and (max-width: $screen-tb) {
+    font-size: 16px;
+  }
+}
+
+// owl内 見出しの間隔調整
+[class*="owl-"] {
+  > * + h2 {
+    margin-top: $space-lg !important;
+    @media only screen and (max-width: $screen-tb) {
+      margin-top: $space-lg-tb !important;
+    }
+  }
+  > * + h3 {
+    margin-top: $space-md !important;
+    @media only screen and (max-width: $screen-tb) {
+      margin-top: $space-md-tb !important;
+    }
+  }
+  > * + h4 {
+    margin-top: $space-rg !important;
+    @media only screen and (max-width: $screen-tb) {
+      margin-top: $space-rg-tb !important;
+    }
+  }
+  > * + h5 {
+    margin-top: $space-sm !important;
+    @media only screen and (max-width: $screen-tb) {
+      margin-top: $space-sm-tb !important;
+    }
+  }
+  > * + p {
+    margin-top: $space-xs !important;
+    @media only screen and (max-width: $screen-tb) {
+      margin-top: $space-xs-tb !important;
+    }
+  }
+  > h2 + *,
+  > h3 + *,
+  > h4 + *,
+  > h5 + * {
+    margin-top: 0 !important;
+  }
+}
 // --------------------------------------------------
 // Common
 // --------------------------------------------------
 // タグの色指定
 .tag {
   display: inline-block;
-
-  font: {
-    size: 12px;
-    weight: bold;
-  }
-
+  font-size: 12px;
+  font-weight: bold;
   color: #fff;
   line-height: 1.5;
-  padding: 0 5px;
+  border-radius: 4px;
   background: $primary;
+  padding: 5px 5px;
 
-  &.-info {
-    background: $secondary;
-  }
-}
-
-//全体ホバー
-.hover-all {
-  position: relative;
-
-  > a {
-    display: block;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    z-index: 9;
-    top: 0;
-    left: 0;
-    font-size: 0;
-  }
+  // &.-info {
+  //   background: $secondary;
+  // }
 }
 
 //youtubeの自動レスポンシブ対応
@@ -231,6 +1241,7 @@ h5 {
 
 // オブジェクトフィット
 .ofi {
+  > picture > img,
   > img {
     height: 100%;
     width: 100%;
@@ -261,6 +1272,7 @@ h5 {
     overflow: hidden;
     position: relative;
 
+    > picture > img,
     > img {
       min-height: 100%;
       width: 100%;
@@ -284,34 +1296,38 @@ h5 {
 // h1:キービジュアル
 // h2:ページタイトル
 .news-detail {
-  & > * + h3 {
-    // 見出しのスタイル
-    margin-top: 60px;
-  }
+  // // 見出しのスタイル
+  // & > * + h3 {
+  //   margin-top: 60px;
+  // }
 
-  & > * + h4 {
-    // 見出し(小)のスタイル
-    margin-top: 30px;
-  }
+  // // 見出し(小)のスタイル
+  // & > * + h4 {
+  //   margin-top: 30px;
+  // }
 
+  // 自由文のスタイル
   .news-detail-free {
-    // 自由文のスタイル
     margin: 0 0 40px;
-
     p {
       margin-bottom: 20px;
     }
   }
 
+  // 画像のスタイル
   .news-detail-image {
-    // 画像のスタイル
-    text-align: center;
     margin: 10px auto;
-
-    > img {
-      height: auto;
-      width: auto;
-      max-width: 100%;
+    > figure {
+      // text-align: center;
+      > img {
+        height: auto;
+        width: auto;
+        max-width: 100%;
+      }
+      > figcaption {
+        font-size: $base-font-size-tb;
+        // padding-top: 5px;
+      }
     }
   }
 
@@ -322,11 +1338,13 @@ h5 {
       padding-left: 20px;
       &:after {
         content: $icon-pdf;
-        font: 900 16px $f-fa;
+        font-size: 16px;
+        font-family: $f-fa;
+        font-weight: 900;
+        color: $color-pdf;
         position: absolute;
         top: 0;
         left: 0;
-        color: $color-pdf;
       }
     }
   }
@@ -349,34 +1367,79 @@ h5 {
 
 // 矢印が必要な場合は.iconを編集してください。
 .pagination {
-  text-align: center;
+  @include flex(row, wrap, center, stretch);
+  gap: 8px;
+  margin-top: 80px;
+  @media only screen and (max-width: $screen-tb) {
+    gap: 5px;
+    margin-top: 40px;
+  }
 
   .item {
-    display: inline-block;
+    display: grid;
     height: 50px;
     width: 50px;
-
-    font: {
-      size: 20px;
-      weight: bold;
-    }
-
-    color: $primary;
+    font-size: 16px;
+    font-weight: bold;
+    color: $color-text;
     line-height: 48px;
     text-align: center;
     text-decoration: none;
-    border: 1px solid $primary;
-    background: #fff;
-    margin: 0 5px 10px;
+    border-radius: 4px;
+    background-color: $color-gray;
     transition: all 0.3s;
+
+    place-content: center;
 
     &.icon {
       display: none;
+      // transition: 0.3s;
+      // background-color: $color-gray;
+      // border-radius: 50%;
+      // &::before {
+      //   content: "";
+      //   font-size: 13px;
+      //   font-family: $f-fa;
+      //   font-weight: 900;
+      //   color: $color-text;
+      //   transition: 0.3s;
+      // }
+      // &:first-of-type {
+      //   &::before {
+      //     content: "\f060";
+      //   }
+      // }
+      // &:last-of-type {
+      //   &::before {
+      //     content: "\f061";
+      //   }
+      // }
+      // &:hover {
+      //   background-color: $primary;
+      //   &::before {
+      //     color: #fff;
+      //   }
+      // }
+      // &[href="#"] {
+      //   display: none;
+      // }
     }
 
     &[href="#"] {
       cursor: default;
       pointer-events: none;
+    }
+
+    @media only screen and (max-width: $screen-tb) {
+      height: 40px;
+      width: 40px;
+      font-size: 14px;
+
+      .icon {
+        &::before {
+          font-size: 12px;
+        }
+      }
     }
   }
 

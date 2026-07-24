@@ -1,56 +1,70 @@
 @charset "UTF-8";
-// CMS内エディタ用クラス
 
 @use "../../global" as *;
 
+// --------------------------------------------------
+// Table
+// --------------------------------------------------
 .table01 {
+  @include table-subclass();
   width: 100%;
 
   th,
   td {
-    font-size: 16px;
     line-height: 1.5;
+    border: 1px solid $color-border;
     padding: 30px;
   }
 
   thead {
     th {
-      font-weight: bold;
-      color: #fff;
+      color: $color-white;
       background: $primary;
     }
   }
 
   tbody {
     th {
-      font-weight: bold;
+      color: $color-white;
+      background: $primary;
     }
   }
 
-  @media only screen and (max-width: $screen-tb) {
+  @media only screen and (max-width: $screen-sp) {
     &:not(.nodrop-table) {
+      border-bottom: 1px solid $color-border;
       th,
       td {
+        border-bottom: none;
         display: block;
         width: 100% !important;
       }
     }
   }
 
-  &.-middle {
+  // 病院用サブクラス
+  &.-dept {
+    @include nodrop-table;
+    table-layout: fixed;
     th,
     td {
+      text-align: center;
       vertical-align: middle;
+      padding-inline: 10px;
+    }
+    @media only screen and (max-width: $screen-sp) {
+      min-width: 500px;
     }
   }
 }
 
 .table02 {
+  @include table-subclass();
   width: 100%;
 
   tr {
-    border-top: 1px solid #d0d0d0;
-    border-bottom: 1px solid #d0d0d0;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
   }
 
   th,
@@ -58,13 +72,13 @@
     padding: 20px;
   }
 
-  @media only screen and (max-width: $screen-tb) {
+  @media only screen and (max-width: $screen-sp) {
     &:not(.nodrop-table) {
       th,
       td {
-        line-height: 1.5;
         display: block;
         width: 100% !important;
+        line-height: 1.5;
         padding: 20px;
       }
 
@@ -89,27 +103,6 @@
 // --------------------------------------------------
 // その他
 // --------------------------------------------------
-.overflow-table {
-  overflow-x: auto;
-}
-
 .nodrop-table {
-  tbody,
-  thead {
-    tr {
-      th,
-      td {
-        @media only screen and (max-width: $screen-tb) {
-          display: table-cell;
-          width: auto !important;
-        }
-      }
-
-      th {
-        @media only screen and (max-width: $screen-tb) {
-          white-space: nowrap;
-        }
-      }
-    }
-  }
+  @include nodrop-table;
 }

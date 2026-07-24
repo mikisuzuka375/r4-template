@@ -1,13 +1,13 @@
-const PC_FIXED = false;
-const SP_FIXED = false;
-const SP_WIDTH = 769;
+const PC_FIXED = true;
+const SP_FIXED = true;
+const SP_WIDTH = 1200;
 const SPEED = 500;
 
 // 1. スクロール関連
 
 function scrollPosition(position) {
   let offsetFromTop = $('header');
-  position -= PC_FIXED && $(window).innerWidth() >= SP_WIDTH || SP_FIXED && $(window).innerWidth() < SP_WIDTH ? offsetFromTop.innerHeight() : 0;
+  position -= PC_FIXED && $(window).innerWidth() > SP_WIDTH || SP_FIXED && $(window).innerWidth() <= SP_WIDTH ? offsetFromTop.innerHeight() : 0;
   $('html, body').animate({
     scrollTop: position
   }, SPEED);
@@ -17,13 +17,19 @@ $(function () {
   let body = $(document.body);
   let menu_open = false;
   let menu_btn = $('.slidemenu-btn').attr('tabindex', '0');
+  let contents_area = $('.l-main, footer');
+  let menu_area = $('.slide-menu');
   // let menu_img = $(".slidemenu-btn").find('img'); // 画像のスライドメニューボタン
   // let menu_txt = $(".slidemenu-btn").find('.ttl'); // テキストのスライドメニューボタン
 
   function slidemenuOpen() {
     // $(menu_img).attr("src", $(menu_img).attr("src").replace("menu", "close"));
     // $(menu_txt).text("close");
+    contents_area.attr('inert', "");
+    menu_area.removeAttr('inert');
+    menu_area.attr('aria-hidden', 'false');
     menu_btn.addClass('active');
+    menu_btn.attr('aria-expanded', 'true');
     body.addClass('open');
     body.removeAttr('style');
     menu_open = true;
@@ -32,7 +38,11 @@ $(function () {
   function slidemenuClose() {
     // $(menu_img).attr("src", $(menu_img).attr("src").replace("close", "menu"));
     // $(menu_txt).text("menu");
+    contents_area.removeAttr('inert');
+    menu_area.attr('inert', "");
+    menu_area.attr('aria-hidden', 'true');
     menu_btn.removeClass('active');
+    menu_btn.attr('aria-expanded', 'false');
     body.removeClass('open');
     body.removeAttr('style');
     if (top != 0) {
@@ -72,6 +82,8 @@ $(function () {
         // tabjsとの競合回避
         slidemenuClose();
         return false;
+      } else if ($(this).attr('data-reset') || $(this).attr('data-remodal-target')) {
+        // 何もしない
       } else {
         e.preventDefault();
         slidemenuClose();
@@ -131,29 +143,29 @@ $(function () {
   });
 
   // 1.5秒で表示消す
-  if ($(window).innerWidth() < SP_WIDTH) {
-    var scrollStopEvent = new $.Event("scrollstop");
-    var delay = 1500;
-    var timer;
-    function scrollStopEventTrigger() {
-      if (timer) {
-        clearTimeout(timer);
-      }
-      timer = setTimeout(function () {
-        top_btn.fadeOut();
-        $(window).trigger(scrollStopEvent)
-      }, delay);
-    }
-    $(window).on("scroll", function(){
-      scrollStopEventTrigger();
-    });
-  };
+  // if ($(window).innerWidth() <= SP_WIDTH) {
+  //   var scrollStopEvent = new $.Event("scrollstop");
+  //   var delay = 1500;
+  //   var timer;
+  //   function scrollStopEventTrigger() {
+  //     if (timer) {
+  //       clearTimeout(timer);
+  //     }
+  //     timer = setTimeout(function () {
+  //       top_btn.fadeOut();
+  //       $(window).trigger(scrollStopEvent)
+  //     }, delay);
+  //   }
+  //   $(window).on("scroll", function(){
+  //     scrollStopEventTrigger();
+  //   });
+  // };
 });
 
 // アンカーリンク付きのページ遷移をするとき：ヘッダーが固定分調整するjs
 $(window).on('load', function () {
   if (location.hash != "" && $(location.hash).length > 0) {
-    if (PC_FIXED && $(window).innerWidth() >= SP_WIDTH || SP_FIXED && $(window).innerWidth() < SP_WIDTH) {
+    if (PC_FIXED && $(window).innerWidth() > SP_WIDTH || SP_FIXED && $(window).innerWidth() <= SP_WIDTH) {
       let pos = $(location.hash).offset().top - $('header').innerHeight();
       $("html, body").animate({
         scrollTop: pos

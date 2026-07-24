@@ -5,9 +5,9 @@
       position: 0, // タブよりposition分上にスクロールする
       scroll_target: "", // 読み込み時毎度特定の場所へスクロールする（※ページャーなど）
       reload_actie: [], // パラメータ付与でリロードを行う場合の親クラス
-      SP_WIDTH: 769, // ブレイクポイント
-      PC_FIXED: false, // PCのヘッダー固定
-      SP_FIXED: false, // TB以下のヘッダー固定
+      SP_WIDTH: 1200, // ブレイクポイント
+      PC_FIXED: true, // PCのヘッダー固定
+      SP_FIXED: true, // TB以下のヘッダー固定
       PC_FIXED_ELE: "header", // PCのヘッダー高さ要素
       SP_FIXED_ELE: "header", // TB以下のヘッダー高さ要素
       isScrollable: false,
@@ -23,15 +23,15 @@
     let tabdesu = false;
     let speed = 500;
     if (
-      window.matchMedia("(min-width: " + config.SP_WIDTH + "px)").matches &&
-      config.PC_FIXED
-    ) {
-      headerFixed = $(config.PC_FIXED_ELE).innerHeight();
-    } else if (
       window.matchMedia("(max-width: " + config.SP_WIDTH + "px)").matches &&
       config.SP_FIXED
     ) {
       headerFixed = $(config.SP_FIXED_ELE).innerHeight();
+    } else if (
+      window.matchMedia("(min-width: " + config.SP_WIDTH + "px)").matches &&
+      config.PC_FIXED
+    ) {
+      headerFixed = $(config.PC_FIXED_ELE).innerHeight();
     }
 
     // 1.function設定
@@ -251,29 +251,13 @@
     hash_directories(tabHash, true);
 
     // 3.クリック時の処理
-    // $('a[href*="#"], a[data-href *= "#"]').on("click", function (e) {
-    // hrefを含むと、common.jsと競合してしまい、スクロール後に一時スクロールできなくなる。
-    //更新 slectのchangeを追加
+    // select用
     $(this).on("change", function (e) {
       clickEvent(e, $(this));
     });
-    $($(this).find('a[data-href *= "#"]')).on("click", function (e) {
+    // クリック時
+    $('a[data-href *= "#"]').on("click", function (e) {
       clickEvent(e, $(this));
-    });
-
-    $('a[href *= "#"').on("click", function (e) {
-      var atag = $(this);
-      if (
-        $(this).data("href") &&
-        atag.prop("href").split("#")[0] == location.origin + location.pathname
-      ) {
-        var hrefs = $(this).data("href");
-        $(tab_link).each(function (i, t) {
-          if ($(t).find('a[data-href="' + hrefs + '"]').length != 0) {
-            clickEvent(e, atag);
-          }
-        });
-      }
     });
 
     function clickEvent(e, tag) {

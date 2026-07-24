@@ -1,23 +1,75 @@
 @charset "UTF-8";
-// --------------------------------------------------
-// 変数設定
-// --------------------------------------------------
-$primary: #000;
-$secondary: #000;
 
-// アイコンフォント
-$f-fa: "Font Awesome 6 Free";
-$f-fab: "Font Awesome 6 Brands";
-$f-mdi: Material Design Icons;
+@use "settings" as *;
+// --------------------------------------------------
+// Colors
+// --------------------------------------------------
+
+// --- Palette ---
+$color-red: red;
+// 以下、アクセシビリティfalseの場合も必要に応じて使ってください。
+$color-red-rgb: 255, 0, 0;
+$color-black: #000;
+$color-white: #fff;
+$color-blue: #005bac;
+$color-yellow: #fff176;
+$color-gray: #eee;
+$color-gray-lighter: #f6f6f6;
+
+// --- UI Semantic ---
+$primary: #ffa500;
+$primary-rgb: 255, 165, 0;
+$secondary: #19999F;
+$color-text: #333;
+$color-border: #ddd;
+$color-link: $primary;
+$color-focus: $color-red;
+
+// --- Domain Semantic ---
+$color-pdf: #ef0d00;
+$color-doc: #1b50b0;
+$color-xls: #238049;
+
+// --------------------------------------------------
+// Font
+// --------------------------------------------------
+
+// Iconフォント
+$f-fa: "Font Awesome 7 Free";
+$f-fab: "Font Awesome 7 Brands";
 
 // 文字フォント
-$f-min: "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "ＭＳ Ｐ明朝", "MS PMincho",
+$f-min:
+  "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "ＭＳ Ｐ明朝", "MS PMincho",
   "游明朝体", "Yu Mincho", YuMincho, serif;
 
-// アイコンフォントオーサム
+// --------------------------------------------------
+// Icons
+// --------------------------------------------------
+
+// ファイル
+$icon-file: "\f15b";
 $icon-pdf: "\f1c1";
-$color-pdf: #ef0d00;
 $icon-doc: "\f1c2";
-$color-doc: #1b50b0;
 $icon-xls: "\f1c3";
-$color-xls: #238049;
+
+// 矢印
+$icon-arrow-right: "\f061";
+$icon-angle-right: "\f105";
+$icon-circle-arrow-right: "\f0a9";
+$icon-circle-right: "\f35a";
+$icon-circle-chevron-right: "\f138";
+
+// プラス/マイナス
+$icon-plus: "\2b";
+$icon-minus: "\f068";
+$icon-circle-plus: "\f055";
+$icon-circle-minus: "\f056";
+
+// 電話・FAX
+$icon-tel: "\f095";
+$icon-fax: "\f1ac";
+
+// その他
+$icon-font-height: "\f034";
+$icon-color: "\f53f";

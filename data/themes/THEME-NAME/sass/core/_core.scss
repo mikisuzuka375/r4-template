@@ -1,5 +1,102 @@
 @use "../global" as *;
 
+@if $accessibility-functions {
+  // :root にはデフォルトテーマ（light）のカスタムプロパティを定義します。
+  :root {
+    // Theme: light (default)
+    --primary: #{$light-site-primary};
+    --primary-rgb: #{$light-site-primary-rgb};
+    --secondary: #{$light-site-secondary};
+    --red: #{$light-site-red};
+    --white: #{$light-site-white};
+    --text: #{$light-site-text};
+    --border: #{$light-site-border};
+    --link: #{$light-site-link-color};
+    --bg: #{$light-site-bg};
+    --bg-gray: #{$light-site-bg-gray};
+    --bg-gray-lighter: #{$light-site-bg-gray-lighter};
+    --bg-red: #{$light-site-bg-red};
+    --bg-red-rgb: #{$light-site-bg-red-rgb};
+    // Component-specific variables
+    --box-bg: #{$light-site-white};
+    --box-text: #{$light-site-text};
+    --box-border: #{$light-site-border};
+    // ファイルタイプごとのカラーも同様に定義します（固定）
+    --file-pdf: #{$color-pdf};
+    --file-doc: #{$color-doc};
+    --file-xls: #{$color-xls};
+  }
+  body[data-theme='dark'] {
+    // Theme: dark
+    --primary: #{$dark-site-primary};
+    --primary-rgb: #{$dark-site-primary-rgb};
+    --secondary: #{$dark-site-secondary};
+    --red: #{$dark-site-red};
+    --white: #{$dark-site-white};
+    --text: #{$dark-site-text};
+    --border: #{$dark-site-border};
+    --link: #{$dark-site-link-color};
+    --bg: #{$dark-site-bg};
+    --bg-gray: #{$dark-site-bg-gray};
+    --bg-gray-lighter: #{$dark-site-bg-gray-lighter};
+    --bg-red: #{$dark-site-bg-red};
+    --bg-red-rgb: #{$dark-site-bg-red-rgb};
+    // Component-specific variables
+    --box-bg: #{$dark-site-bg-gray};
+    --box-text: #{$dark-site-text};
+    --box-border: #{$dark-site-border};
+  }
+
+  body[data-theme='blue'] {
+    // Theme: blue
+    --primary: #{$blue-site-primary};
+    --primary-rgb: #{$blue-site-primary-rgb};
+    --secondary: #{$blue-site-secondary};
+    --red: #{$blue-site-red};
+    --white: #{$blue-site-white};
+    --text: #{$blue-site-text};
+    --border: #{$blue-site-border};
+    --link: #{$blue-site-link-color};
+    --bg: #{$blue-site-bg};
+    --bg-gray: #{$blue-site-bg-gray};
+    --bg-gray-lighter: #{$blue-site-bg-gray-lighter};
+    --bg-red: #{$blue-site-bg-red};
+    --bg-red-rgb: #{$blue-site-bg-red-rgb};
+    // Component-specific variables
+    --box-bg: #{$blue-site-bg-gray};
+    --box-text: #{$blue-site-text};
+    --box-border: #{$blue-site-border};
+  }
+
+  body[data-theme='yellow'] {
+    // Theme: yellow
+    --primary: #{$yellow-site-primary};
+    --primary-rgb: #{$yellow-site-primary-rgb};
+    --secondary: #{$yellow-site-secondary};
+    --red: #{$yellow-site-red};
+    --white: #{$yellow-site-white};
+    --text: #{$yellow-site-text};
+    --border: #{$yellow-site-border};
+    --link: #{$yellow-site-link-color};
+    --bg: #{$yellow-site-bg};
+    --bg-gray: #{$yellow-site-bg-gray};
+    --bg-gray-lighter: #{$yellow-site-bg-gray-lighter};
+    --bg-red: #{$yellow-site-bg-red};
+    --bg-red-rgb: #{$yellow-site-bg-red-rgb};
+    // Component-specific variables
+    --box-bg: #{$yellow-site-bg-gray};
+    --box-text: #{$yellow-site-text};
+    --box-border: #{$yellow-site-border};
+  }
+}
+
+// OSのダークモード設定に追従させたい場合は、以下のメディアクエリを有効にします。
+// @media (prefers-color-scheme: dark) {
+//   body:not([data-theme="light"]) {
+//     // ここに body[data-theme="dark"] と同じ定義を記述
+//   }
+// }
+
 *,
 ::before,
 ::after {
@@ -15,20 +112,38 @@
 ::before,
 ::after {
   display: inline-block;
-  text-decoration: inherit;
   vertical-align: inherit;
+  text-decoration: inherit;
 }
 
 html {
+  font-size: $base-font-size;
   font-family: sans-serif;
+
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+
+  @if $responsive {
+    @media only screen and (max-width: $screen-tb) {
+      font-size: $base-font-size-tb;
+    }
+  }
+  @if $accessibility-functions {
+    // --- Font Size Switcher ---
+    &[data-font-size='small'] {
+      font-size: 85%;
+    }
+    // mediumはデフォルトのhtml設定と同じなので不要
+    &[data-font-size='large'] {
+      font-size: 115%;
+    }
+  }
 }
 
 body {
-  background: #fff;
-  margin: 0;
   padding: 0;
+  margin: 0;
+
   -webkit-font-smoothing: antialiased;
   // text-align: left;
 }
@@ -81,8 +196,8 @@ sub,
 sup {
   font-size: 75%;
   line-height: 0;
-  position: relative;
   vertical-align: baseline;
+  position: relative;
 }
 
 sup {
@@ -94,9 +209,10 @@ sub {
 }
 
 img {
-  border: 0;
-  vertical-align: bottom;
+  height: auto;
   max-width: 100%;
+  vertical-align: bottom;
+  border: 0;
 }
 
 svg:not(:root) {
@@ -109,35 +225,36 @@ hr {
 }
 
 *:focus-visible {
-  outline: $focus-color !important;
-  outline-style: solid !important;
+  outline: $color-focus !important;
   outline-width: 2px !important;
+  outline-style: solid !important;
 }
 
-input[type=checkbox]:focus+label {
+input[type="checkbox"]:focus + label {
   text-decoration: underline;
+
   text-decoration-color: $primary;
 }
 
 select {
   height: 30px;
-  color: inherit;
   font: inherit;
-  margin: 0;
-  padding: 0 20px 0 5px;
+  color: inherit;
   line-height: 1;
+  padding: 0 20px 0 5px;
+  margin: 0;
 }
 
 button,
 input,
 textarea {
-  color: inherit;
   font: inherit;
-  margin: 0;
-  padding: 4px 6px;
+  color: inherit;
   border: 1px solid #ccc;
   border-radius: 4px;
   outline: none;
+  padding: 4px 6px;
+  margin: 0;
 }
 
 input:not([type="checkbox"]):not([type="radio"]),
@@ -157,15 +274,15 @@ textarea:focus {
 
 input[type="button"],
 input[type="submit"] {
-  background-color: transparent;
   border: none;
+  background-color: transparent;
 }
 
 button {
   overflow: visible;
-  background-color: transparent;
-  border-radius: 0;
   border: none;
+  border-radius: 0;
+  background-color: transparent;
 }
 
 button,
@@ -177,8 +294,9 @@ button,
 input[type="button"],
 input[type="reset"],
 input[type="submit"] {
-  -webkit-appearance: none;
   cursor: pointer;
+
+  -webkit-appearance: none;
 }
 
 button[disabled],
@@ -208,8 +326,9 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="search"] {
-  -webkit-appearance: textfield;
   box-sizing: content-box;
+
+  -webkit-appearance: textfield;
 }
 
 input[type="search"]::-webkit-search-cancel-button,
@@ -233,9 +352,15 @@ textarea:focus {
   border-color: rgba(82, 168, 236, 0.8);
   outline: 0;
   outline: thin dotted \9;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+  -webkit-box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(82, 168, 236, 0.6);
+  -moz-box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(82, 168, 236, 0.6);
+  box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(82, 168, 236, 0.6);
 }
 
 textarea {
@@ -248,14 +373,15 @@ label {
 }
 
 table {
-  border-collapse: collapse;
   border-spacing: 0;
+  border-collapse: collapse;
 }
 
 td,
 th {
   text-align: left;
   vertical-align: top;
+
   font-feature-settings: "palt";
 }
 
@@ -291,8 +417,8 @@ thead,
 tbody,
 tfoot,
 address {
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 input,
@@ -315,6 +441,7 @@ li,
 form,
 p {
   text-align: inherit;
+
   font-feature-settings: "palt";
 }
 
@@ -324,10 +451,14 @@ h3,
 h4,
 h5,
 h6 {
-  line-height: normal;
   font-weight: normal;
+  line-height: normal;
 }
 
 figure {
   margin: 0;
+  text-align: center;
+  >figcaption {
+    padding-top: 5px;
+  }
 }
